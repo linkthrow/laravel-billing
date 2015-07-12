@@ -73,12 +73,12 @@ class Customer implements CustomerInterface
 		if (!$this->stripe_customer) {
 			$this->stripe_customer = Stripe_Customer::retrieve($this->id);
 		}
-		
-		if (!$this->stripe_customer || $this->stripe_customer->deleted) {
-			return null;
-		}
-		
-		$discounts = array();
+
+        if (!$this->stripe_customer) {
+            return null;
+        }
+
+        $discounts = array();
 		if ($this->stripe_customer->discount) {
 			$discounts[] = array(
 				'coupon'      => $this->stripe_customer->discount->coupon->id,
