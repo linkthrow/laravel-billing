@@ -2,8 +2,8 @@
 
 use Mmanos\Billing\Gateways\CardInterface;
 use Illuminate\Support\Arr;
-use Stripe_Customer;
-use Stripe_Card;
+use Stripe\Customer as Stripe_Customer;
+use Stripe\Card as Stripe_Card;
 
 class Card implements CardInterface
 {
@@ -34,16 +34,15 @@ class Card implements CardInterface
 	 * @var Stripe_Card
 	 */
 	protected $stripe_card;
-	
-	/**
-	 * Create a new Stripe card instance.
-	 *
-	 * @param Gateway         $gateway
-	 * @param Stripe_Customer $customer
-	 * @param mixed           $id
-	 * 
-	 * @return void
-	 */
+
+    /**
+     * Create a new Stripe card instance.
+     *
+     * @param Gateway $gateway
+     * @param Stripe_Customer $customer
+     * @param mixed $id
+     *
+     */
 	public function __construct(Gateway $gateway, Stripe_Customer $customer = null, $id = null)
 	{
 		$this->gateway = $gateway;

@@ -2,8 +2,8 @@
 
 use Mmanos\Billing\Gateways\ChargeInterface;
 use Illuminate\Support\Arr;
-use Stripe_Customer;
-use Stripe_Charge;
+use Stripe\Customer as Stripe_Customer;
+use Stripe\Charge as Stripe_Charge;
 
 class Charge implements ChargeInterface
 {

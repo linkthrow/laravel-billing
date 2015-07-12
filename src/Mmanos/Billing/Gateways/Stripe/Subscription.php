@@ -2,8 +2,8 @@
 
 use Mmanos\Billing\Gateways\SubscriptionInterface;
 use Illuminate\Support\Arr;
-use Stripe_Customer;
-use Stripe_Subscription;
+use Stripe\Customer as Stripe_Customer;
+use Stripe\Subscription as Stripe_Subscription;
 
 class Subscription implements SubscriptionInterface
 {
@@ -34,16 +34,15 @@ class Subscription implements SubscriptionInterface
 	 * @var Stripe_Subscription
 	 */
 	protected $stripe_subscription;
-	
-	/**
-	 * Create a new Stripe subscription instance.
-	 *
-	 * @param Gateway         $gateway
-	 * @param Stripe_Customer $customer
-	 * @param mixed           $id
-	 * 
-	 * @return void
-	 */
+
+    /**
+     * Create a new Stripe subscription instance.
+     *
+     * @param Gateway $gateway
+     * @param Stripe_Customer $customer
+     * @param mixed $id
+     *
+     */
 	public function __construct(Gateway $gateway, Stripe_Customer $customer = null, $id = null)
 	{
 		$this->gateway = $gateway;

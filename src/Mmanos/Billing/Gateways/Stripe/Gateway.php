@@ -3,7 +3,7 @@
 use Mmanos\Billing\Gateways\GatewayInterface;
 use Mmanos\Billing\Gateways\CustomerInterface;
 use Illuminate\Support\Facades\Config;
-use Stripe;
+use Stripe\Stripe;
 
 class Gateway implements GatewayInterface
 {
@@ -13,20 +13,19 @@ class Gateway implements GatewayInterface
 	 * @var array
 	 */
 	protected $connection;
-	
-	/**
-	 * Create a new Stripe gateway instance.
-	 *
-	 * @return void
-	 */
+
+    /**
+     * Create a new Stripe gateway instance.
+     *
+     * @param null $connection
+     */
 	public function __construct($connection = null)
 	{
 		if (null === $connection) {
-			$connection = Config::get('laravel-billing::gateways.stripe');
+			$connection = Config::get('billing.gateways.stripe');
 		}
-		
 		$this->connection = $connection;
-		
+
 		Stripe::setApiKey($connection['secret']);
 	}
 	
@@ -41,15 +40,14 @@ class Gateway implements GatewayInterface
 	{
 		return new Customer($this, $id);
 	}
-	
-	/**
-	 * Fetch a subscription instance.
-	 *
-	 * @param mixed    $id
-	 * @param Customer $customer
-	 * 
-	 * @return Subscription
-	 */
+
+    /**
+     * Fetch a subscription instance.
+     *
+     * @param mixed $id
+     * @param CustomerInterface|Customer $customer
+     * @return Subscription
+     */
 	public function subscription($id = null, CustomerInterface $customer = null)
 	{
 		if ($customer) {

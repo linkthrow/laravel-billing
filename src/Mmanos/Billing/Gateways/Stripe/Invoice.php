@@ -2,8 +2,8 @@
 
 use Mmanos\Billing\Gateways\InvoiceInterface;
 use Illuminate\Support\Arr;
-use Stripe_Customer;
-use Stripe_Invoice;
+use Stripe\Customer as Stripe_Customer;
+use Stripe\Invoice as Stripe_Invoice;
 
 class Invoice implements InvoiceInterface
 {
@@ -34,16 +34,15 @@ class Invoice implements InvoiceInterface
 	 * @var Stripe_Invoice
 	 */
 	protected $stripe_invoice;
-	
-	/**
-	 * Create a new Stripe invoice instance.
-	 *
-	 * @param Gateway         $gateway
-	 * @param Stripe_Customer $customer
-	 * @param mixed           $id
-	 * 
-	 * @return void
-	 */
+
+    /**
+     * Create a new Stripe invoice instance.
+     *
+     * @param Gateway $gateway
+     * @param Stripe_Customer $customer
+     * @param mixed $id
+     *
+     */
 	public function __construct(Gateway $gateway, Stripe_Customer $customer = null, $id = null)
 	{
 		$this->gateway = $gateway;
