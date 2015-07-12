@@ -1,5 +1,6 @@
 <?php namespace Mmanos\Billing\CustomerBillableTrait;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Exception;
 
@@ -8,7 +9,7 @@ class Billing
 	/**
 	 * Customer model.
 	 *
-	 * @var \Illuminate\Database\Eloquent\Model
+	 * @var Model
 	 */
 	protected $model;
 	
@@ -46,15 +47,14 @@ class Billing
 	 * @var bool
 	 */
 	protected $with_subscriptions;
-	
-	/**
-	 * Create a new CustomerBillableTrait Billing instance.
-	 *
-	 * @param \Illuminate\Database\Eloquent\Model $model
-	 * 
-	 * @return void
-	 */
-	public function __construct(\Illuminate\Database\Eloquent\Model $model)
+
+    /**
+     * Create a new CustomerBillableTrait Billing instance.
+     *
+     * @param Model $model
+     *
+     */
+	public function __construct(Model $model)
 	{
 		$this->model = $model;
 		$this->customer = $this->model->gatewayCustomer();
@@ -183,7 +183,7 @@ class Billing
 				$info = $this->customer->info();
 			} catch (Exception $e) {}
 		}
-		
+
 		if (!empty($info)) {
 			$this->model->billing_id = $this->customer->id();
 			$this->model->billing_discounts = Arr::get($info, 'discounts');
