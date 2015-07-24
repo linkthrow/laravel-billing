@@ -186,7 +186,7 @@ class Billing
 
 		if (!empty($info)) {
 			$this->model->billing_id = $this->customer->id();
-			$this->model->billing_discounts = Arr::get($info, 'discounts');
+			$this->model->billing_discounts = $info['discounts'];
 			
 			$cards = array();
 			foreach ($this->customer->cards() as $card) {
