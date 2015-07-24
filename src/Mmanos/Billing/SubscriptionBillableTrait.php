@@ -56,7 +56,7 @@ trait SubscriptionBillableTrait
 	 */
 	public function onGracePeriod()
 	{
-		if ($this->billing_subscription_ends_at) {
+		if ($this->billing_subscription_ends_at && $this->billing_active == false) {
 			return time() < strtotime($this->billing_subscription_ends_at);
 		}
 		
