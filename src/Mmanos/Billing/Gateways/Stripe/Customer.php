@@ -112,7 +112,7 @@ class Customer implements CustomerInterface
 			'email'       => Arr::get($properties, 'email') ? Arr::get($properties, 'email') : null,
 			'coupon'      => Arr::get($properties, 'coupon') ? Arr::get($properties, 'coupon') : null,
 			'card'        => Arr::get($properties, 'card_token') ? Arr::get($properties, 'card_token') : null,
-		));
+        ));
 		
 		$this->id = $stripe_customer->id;
 		

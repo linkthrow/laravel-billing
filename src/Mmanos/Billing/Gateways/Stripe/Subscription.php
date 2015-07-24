@@ -87,7 +87,7 @@ class Subscription implements SubscriptionInterface
 		}
 		
 		$trial_end = $this->stripe_subscription->trial_end;
-		
+
 		$discounts = array();
 		if ($this->stripe_subscription->discount) {
 			$discounts[] = array(
@@ -98,8 +98,8 @@ class Subscription implements SubscriptionInterface
 				'ends_at'     => $this->stripe_subscription->discount->end ? date('Y-m-d H:i:s', $this->stripe_subscription->discount->end) : null,
 			);
 		}
-		
-		return array(
+
+		$return = array(
 			'id'                => $this->id,
 			'plan'              => $this->stripe_subscription->plan->id,
 			'amount'            => $this->stripe_subscription->plan->amount,
@@ -110,19 +110,21 @@ class Subscription implements SubscriptionInterface
 			'period_started_at' => date('Y-m-d H:i:s', $this->stripe_subscription->current_period_start),
 			'period_ends_at'    => date('Y-m-d H:i:s', $this->stripe_subscription->current_period_end),
 			'trial_ends_at'     => $trial_end ? date('Y-m-d H:i:s', $trial_end) : null,
-			'card'              => $this->stripe_customer->default_card,
+			'card'              => $this->stripe_customer->default_source,
 			'discounts'         => $discounts,
 		);
+
+        return $return;
 	}
-	
-	/**
-	 * Create a new subscription.
-	 *
-	 * @param mixed $plan
-	 * @param array $properties
-	 * 
-	 * @return Subscription
-	 */
+
+    /**
+     * Create a new subscription.
+     *
+     * @param mixed $plan
+     * @param array $properties
+     * @return Subscription
+     * @throws \Exception
+     */
 	public function create($plan, array $properties = array())
 	{
 		$trial_end = null;
@@ -145,10 +147,10 @@ class Subscription implements SubscriptionInterface
 
 		$stripe_subscription = $stripe_subscriptions->create(array(
 			'plan'      => $plan,
-			'quantity'  => Arr::get($properties, 'quantity') ? Arr::get($properties, 'quantity') : null,
+			'quantity'  => $properties['quantity'] ? $properties['quantity'] : null,
 			'trial_end' => $trial_end,
-			'coupon'    => Arr::get($properties, 'coupon') ? Arr::get($properties, 'coupon') : null,
-			'card'      => Arr::get($properties, 'card_token') ? Arr::get($properties, 'card_token') : null,
+			'coupon'    => $properties['coupon'] ? $properties['coupon'] : null,
+			'source'    => $properties['card_token'] ? $properties['card_token'] : null,
 		));
 		
 		$this->id = $stripe_subscription->id;
@@ -189,10 +191,10 @@ class Subscription implements SubscriptionInterface
 		}
 		
 		if (!empty($properties['card_token'])) {
-			$this->stripe_subscription->card = $properties['card_token'];
+			$this->stripe_subscription->source = $properties['card_token'];
 		}
-		else if (!empty($properties['card'])) {
-			$this->stripe_subscription->card = $properties['card'];
+		else if (!empty($properties['source'])) {
+			$this->stripe_subscription->source = $properties['source'];
 		}
 		
 		$this->stripe_subscription->save();

@@ -45,7 +45,7 @@ class Invoices
 	public function get()
 	{
 		$invoices = array();
-		
+
 		foreach ($this->model->gatewayCustomer()->invoices() as $invoice) {
 			$invoices[] = new Invoice($this->model, $invoice);
 		}

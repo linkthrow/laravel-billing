@@ -167,7 +167,7 @@ class Subscription
 				'subscription_ends_at' => date('Y-m-d H:i:s'),
 			));
 		}
-		
+
 		$this->subscription->cancel($at_period_end);
 		
 		$this->refresh();
@@ -211,7 +211,8 @@ class Subscription
 				'prorate'       => false,
 				'quantity'      => $quantity,
 				'card_token'    => $this->card_token,
-				'card'          => $this->card,
+				'source'        => $this->card,
+                'billing_active' => 1,
 			));
 		}
 		else {
@@ -354,6 +355,7 @@ class Subscription
 	public function refresh()
 	{
 		$info = array();
+
 		if ($this->subscription) {
 			try {
 				$info = $this->subscription->info();
@@ -364,19 +366,18 @@ class Subscription
 			$this->model->billing_active = 1;
 			$this->model->billing_subscription = $this->subscription->id();
 			$this->model->billing_free = 0;
-			$this->model->billing_plan = Arr::get($info, 'plan');
-			$this->model->billing_amount = Arr::get($info, 'amount', 0);
-			$this->model->billing_interval = Arr::get($info, 'interval');
-			$this->model->billing_quantity = Arr::get($info, 'quantity');
-			$this->model->billing_card = Arr::get($info, 'card');
-			$this->model->billing_trial_ends_at = Arr::get($info, 'trial_ends_at');
-			$this->model->billing_subscription_ends_at = null;
-			$this->model->billing_subscription_discounts = Arr::get($info, 'discounts');
+			$this->model->billing_plan = $info['plan'];
+			$this->model->billing_amount = $info['amount'];
+			$this->model->billing_interval = $info['interval'];
+			$this->model->billing_quantity = $info['quantity'];
+			$this->model->billing_card = $info['card'];
+			$this->model->billing_trial_ends_at = $info['trial_ends_at'];
+			$this->model->billing_subscription_ends_at = $info['period_ends_at'];
+			$this->model->billing_subscription_discounts = $info['discounts'];
 			
-			if (!Arr::get($info, 'active')) {
+			if (!$info['active']) {
 				$this->model->billing_active = 0;
 				$this->model->billing_trial_ends_at = null;
-				$this->model->billing_subscription_ends_at = Arr::get($info, 'period_ends_at', date('Y-m-d H:i:s'));
 			}
 		}
 		else {
