@@ -1,4 +1,4 @@
-# Billing Package for Laravel 4
+# Billing Package for Laravel 5
 
 This package provides an expressive, fluent interface to a billing services gateway. It handles almost all of the boilerplate code for managing billing customers, subscriptions, and individual charges. The usage and feature set was heavily influenced by the popular [Laravel Cashier](http://laravel.com/docs/billing) package. However, it has these major differences:
 
@@ -23,7 +23,7 @@ It currently comes bundled with drivers for these billing services:
 Add this to your composer.json file, in the require object:
 
 ```javascript
-"mmanos/laravel-billing": "dev-master"
+"linkthrow/laravel-billing": "dev-master"
 ```
 
 After that, run composer install to install the package.
@@ -46,7 +46,7 @@ The following composer dependencies are needed for the listed billing gateways:
 Publish the default config file to your application so you can make modifications.
 
 ```console
-$ php artisan config:publish mmanos/laravel-billing
+$ php artisan config:publish linkthrow/laravel-billing
 ```
 
 #### Customer Migration
