@@ -1,5 +1,5 @@
 {
-    "name": "linkthrow/linkthrow-laravel-billing",
+    "name": "linkthrow/laravel-billing",
     "description": "A billing package for Laravel 5.",
     "keywords": ["laravel", "billing", "stripe", "braintree", "cashier", "payments", "subscriptions", "charges"],
     "authors": [
