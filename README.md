@@ -30,7 +30,7 @@ After that, run composer install to install the package.
 
 #### Service Provider
 
-Register the `Mmanos\Billing\BillingServiceProvider` in your `app` configuration file.
+Register the `LinkThrow\Billing\BillingServiceProvider` in your `app` configuration file.
 
 #### Dependencies
 
@@ -82,11 +82,11 @@ Once the migration has been created, simply run the `migrate` command.
 Next, add the CustomerBillableTrait to your customer model definition:
 
 ```php
-use Mmanos\Billing\CustomerBillableTrait;
+use LinkThrow\Billing\CustomerBillableTrait;
 
 class User extends Eloquent
 {
-	use CustomerBillableTrait;
+    use CustomerBillableTrait;
 
 }
 ```
@@ -96,17 +96,17 @@ You should also define a `subscriptionmodels` method that returns all models tha
 ```php
 public function subscriptionmodels()
 {
-	// Return an Eloquent relationship.
-	return $this->hasMany('Website');
-	
-	// Or, return an array or collection of models.
-	return Website::where('user_id', $this->id)->get();
-	
-	// Or, return an array of collections.
-	return array(
-		Website::where('user_id', $this->id)->get(),
-		Domain::where('user_id', $this->id)->get(),
-	);
+    // Return an Eloquent relationship.
+    return $this->hasMany('Website');
+    
+    // Or, return an array or collection of models.
+    return Website::where('user_id', $this->id)->get();
+    
+    // Or, return an array of collections.
+    return array(
+        Website::where('user_id', $this->id)->get(),
+        Domain::where('user_id', $this->id)->get(),
+    );
 }
 ```
 
@@ -115,11 +115,11 @@ public function subscriptionmodels()
 Then, add the SubscriptionBillableTrait to your subscription model definition(s):
 
 ```php
-use Mmanos\Billing\SubscriptionBillableTrait;
+use LinkThrow\Billing\SubscriptionBillableTrait;
 
 class Website extends Eloquent
 {
-	use SubscriptionBillableTrait;
+    use SubscriptionBillableTrait;
 
 }
 ```
@@ -129,11 +129,11 @@ You should also define a `customermodel` method that returns the model represent
 ```php
 public function customermodel()
 {
-	// Return an Eloquent relationship.
-	return $this->belongsTo('User', 'user_id');
-	
-	// Or, Return an Eloquent model.
-	return User::find($this->user_id);
+    // Return an Eloquent relationship.
+    return $this->belongsTo('User', 'user_id');
+    
+    // Or, Return an Eloquent model.
+    return User::find($this->user_id);
 }
 ```
 
@@ -181,7 +181,7 @@ If you would like to specify additional customer details, you may do so by passi
 
 ```php
 $user->billing()->withCardToken('token')->create(array(
-	'email' => $email,
+    'email' => $email,
 ));
 ```
 
@@ -213,8 +213,8 @@ Updating an existing credit card's information (such as expiration date or billi
 
 ```php
 $card->update(array(
-	'exp_month' => '01',
-	'exp_year'  => '2017',
+    'exp_month' => '01',
+    'exp_year'  => '2017',
 ));
 ```
 
@@ -282,7 +282,7 @@ To verify that a customer has been created in the billing gateway, use the `read
 
 ```php
 if ($user->readyForBilling()) {
-	//
+    //
 }
 ```
 
@@ -435,7 +435,7 @@ To verify that a model is subscribed to your application, use the `subscribed` c
 
 ```php
 if ($website->subscribed()) {
-	//
+    //
 }
 ```
 
@@ -443,7 +443,7 @@ To determine if the model has an active subscription in the billing gateway, use
 
 ```php
 if ($website->billingIsActive()) {
-	//
+    //
 }
 ```
 
@@ -451,7 +451,7 @@ You may also determine if the model is still within their trial period (if appli
 
 ```php
 if ($website->onTrial()) {
-	//
+    //
 }
 ```
 
@@ -459,7 +459,7 @@ To determine if the model was once an active subscriber, but has canceled their 
 
 ```php
 if ($website->canceled()) {
-	//
+    //
 }
 ```
 
@@ -467,7 +467,7 @@ You may also determine if a model has canceled their subscription, but are still
 
 ```php
 if ($website->onGracePeriod()) {
-	//
+    //
 }
 ```
 
@@ -475,7 +475,7 @@ The `everSubscribed` method may be used to determine if the model has ever subsc
 
 ```php
 if ($website->everSubscribed()) {
-	//
+    //
 }
 ```
 
@@ -589,10 +589,10 @@ To enable these events, just point a route to the appropriate gateway controller
 
 ```php
 // Stripe.
-Route::post('stripe/webhook', 'Mmanos\Billing\Gateways\Stripe\WebhookController@handleWebhook');
+Route::post('stripe/webhook', 'LinkThrow\Billing\Gateways\Stripe\WebhookController@handleWebhook');
 
 // Braintree.
-Route::post('braintree/webhook', 'Mmanos\Billing\Gateways\Braintree\WebhookController@handleWebhook');
+Route::post('braintree/webhook', 'LinkThrow\Billing\Gateways\Braintree\WebhookController@handleWebhook');
 ```
 
 By default, this package does not try to delete a subscription after a certain number of failed payment attempts. Most billing gateways can do this automatically which would trigger a deleted subscription webhook event. When that happens, we will update our local model to record that change in status.
@@ -602,12 +602,12 @@ By default, this package does not try to delete a subscription after a certain n
 If you have additional webhook events you would like to handle, simply extend the Webhook controller and point the route to your controller.
 
 ```php
-class WebhookController extends Mmanos\Billing\Gateways\Stripe\WebhookController
+class WebhookController extends LinkThrow\Billing\Gateways\Stripe\WebhookController
 {
-	public function handleChargeDisputeCreated($payload)
-	{
-		// Handle The Event
-	}
+    public function handleChargeDisputeCreated($payload)
+    {
+        // Handle The Event
+    }
 }
 ```
 
@@ -619,7 +619,7 @@ For example, to be notified when a model's trail will end, subscribe to the `tri
 
 ```php
 Website::trialWillEnd(function ($website, $args = array()) {
-	Log::info('Trial will end in ' . array_get($args, 'days') . ' day(s).');
+    Log::info('Trial will end in ' . array_get($args, 'days') . ' day(s).');
 });
 ```
 
@@ -681,8 +681,8 @@ To generate a valid token for this driver, simply JSON encode an object of field
 
 ```javascript
 var token = JSON.stringify({
-	last4     : $('#card-number').val().substr(-4),
-	exp_month : $('#exp-month').val(),
-	exp_year  : $('#exp-year').val()
+    last4     : $('#card-number').val().substr(-4),
+    exp_month : $('#exp-month').val(),
+    exp_year  : $('#exp-year').val()
 });
 ```

@@ -1,11 +1,15 @@
 {
-    "name": "mmanos/laravel-billing",
-    "description": "A billing package for Laravel 4.",
+    "name": "linkthrow/linkthrow-laravel-billing",
+    "description": "A billing package for Laravel 5.",
     "keywords": ["laravel", "billing", "stripe", "braintree", "cashier", "payments", "subscriptions", "charges"],
     "authors": [
         {
             "name": "Mark Manos",
             "email": "mark@airpac.com"
+        },
+        {
+            "name": "Hussan Choudhry",
+            "email": "hussan@uselinkthrow.com"
         }
     ],
     "require": {
@@ -28,7 +32,7 @@
             "src/commands"
         ],
         "psr-0": {
-            "Mmanos\\Billing\\": "src/"
+            "LinkThrow\\Billing\\": "src/"
         }
     },
     "minimum-stability": "stable",
